@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="imgui">
+      <UniqueIdentifier>{14c50b3c-2f13-4735-aca6-ede1b0144986}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ImGuiUtils">
+      <UniqueIdentifier>{7aba8d6b-2fe8-4a19-b387-618d17d469e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="imgui\backends">
+      <UniqueIdentifier>{d9dd8c5b-b74f-4099-8fbe-94966b19f6fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Channelling">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\dependencies\imgui\imconfig.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\imgui\imgui.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\imgui\imgui_internal.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\imgui\imstb_rectpack.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\imgui\imstb_textedit.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\imgui\imstb_truetype.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\ImGuiUtils\ImGuiProfilerRenderer.h">
+      <Filter>ImGuiUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\ImGuiUtils\ProfilerTask.h">
+      <Filter>ImGuiUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\imgui\backends\imgui_impl_glfw.h">
+      <Filter>imgui\backends</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Downloads\LegitEngine-master\src\Ticksim\character.h">
+      <Filter>Channelling</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Downloads\LegitEngine-master\src\Ticksim\incinerate.h">
+      <Filter>Channelling</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Downloads\LegitEngine-master\src\Ticksim\interface.h">
+      <Filter>Channelling</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\imgui\backends\imgui_impl_vulkan.h">
+      <Filter>imgui\backends</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\Downloads\LegitEngine-master\src\Ticksim\incinerate.cc">
+      <Filter>Channelling</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\imgui\imgui.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\imgui\imgui_demo.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\imgui\imgui_draw.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\imgui\imgui_widgets.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\imgui\backends\imgui_impl_glfw.cpp">
+      <Filter>imgui\backends</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Downloads\LegitEngine-master\src\Ticksim\main.cc" />
+    <ClCompile Include="..\dependencies\imgui\imgui_tables.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\imgui\backends\imgui_impl_vulkan.cpp">
+      <Filter>imgui\backends</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
