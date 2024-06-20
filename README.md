@@ -1,7 +1,10 @@
 # Simulating Channelling Skills in Path of Exile
 
-- Support Incinerate and Flamblast
+- Support Incinerate and Flamblast (and transfigured versions)
 - Hold Q to simulate channelling to generate damage graph and mana graph
+
+# Dependency
+- Vulkan SDK
 
 # Reference
 - [ImGUI GLFW+Vulkan example](https://github.com/ocornut/imgui/blob/master/examples/example_glfw_vulkan/main.cpp)
