@@ -130,9 +130,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\Downloads\LegitEngine-master\src\Ticksim\character.h" />
-    <ClInclude Include="..\..\..\..\Downloads\LegitEngine-master\src\Ticksim\incinerate.h" />
-    <ClInclude Include="..\..\..\..\Downloads\LegitEngine-master\src\Ticksim\interface.h" />
     <ClInclude Include="..\dependencies\ImGuiUtils\ImGuiProfilerRenderer.h" />
     <ClInclude Include="..\dependencies\ImGuiUtils\ProfilerTask.h" />
     <ClInclude Include="..\dependencies\imgui\backends\imgui_impl_glfw.h" />
@@ -143,10 +140,12 @@
     <ClInclude Include="..\dependencies\imgui\imstb_rectpack.h" />
     <ClInclude Include="..\dependencies\imgui\imstb_textedit.h" />
     <ClInclude Include="..\dependencies\imgui\imstb_truetype.h" />
+    <ClInclude Include="character.h" />
+    <ClInclude Include="flameblast.h" />
+    <ClInclude Include="incinerate.h" />
+    <ClInclude Include="interface.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\Downloads\LegitEngine-master\src\Ticksim\incinerate.cc" />
-    <ClCompile Include="..\..\..\..\Downloads\LegitEngine-master\src\Ticksim\main.cc" />
     <ClCompile Include="..\dependencies\imgui\backends\imgui_impl_glfw.cpp" />
     <ClCompile Include="..\dependencies\imgui\backends\imgui_impl_vulkan.cpp" />
     <ClCompile Include="..\dependencies\imgui\imgui.cpp" />
@@ -154,6 +153,12 @@
     <ClCompile Include="..\dependencies\imgui\imgui_draw.cpp" />
     <ClCompile Include="..\dependencies\imgui\imgui_tables.cpp" />
     <ClCompile Include="..\dependencies\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="flameblast.cc" />
+    <ClCompile Include="incinerate.cc" />
+    <ClCompile Include="main.cc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="example.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

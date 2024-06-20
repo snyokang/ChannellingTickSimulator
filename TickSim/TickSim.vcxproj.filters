@@ -43,23 +43,23 @@
     <ClInclude Include="..\dependencies\imgui\backends\imgui_impl_glfw.h">
       <Filter>imgui\backends</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\Downloads\LegitEngine-master\src\Ticksim\character.h">
-      <Filter>Channelling</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Downloads\LegitEngine-master\src\Ticksim\incinerate.h">
-      <Filter>Channelling</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Downloads\LegitEngine-master\src\Ticksim\interface.h">
-      <Filter>Channelling</Filter>
-    </ClInclude>
     <ClInclude Include="..\dependencies\imgui\backends\imgui_impl_vulkan.h">
       <Filter>imgui\backends</Filter>
     </ClInclude>
+    <ClInclude Include="interface.h">
+      <Filter>Channelling</Filter>
+    </ClInclude>
+    <ClInclude Include="character.h">
+      <Filter>Channelling</Filter>
+    </ClInclude>
+    <ClInclude Include="flameblast.h">
+      <Filter>Channelling</Filter>
+    </ClInclude>
+    <ClInclude Include="incinerate.h">
+      <Filter>Channelling</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\Downloads\LegitEngine-master\src\Ticksim\incinerate.cc">
-      <Filter>Channelling</Filter>
-    </ClCompile>
     <ClCompile Include="..\dependencies\imgui\imgui.cpp">
       <Filter>imgui</Filter>
     </ClCompile>
@@ -75,12 +75,23 @@
     <ClCompile Include="..\dependencies\imgui\backends\imgui_impl_glfw.cpp">
       <Filter>imgui\backends</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\Downloads\LegitEngine-master\src\Ticksim\main.cc" />
     <ClCompile Include="..\dependencies\imgui\imgui_tables.cpp">
       <Filter>imgui</Filter>
     </ClCompile>
     <ClCompile Include="..\dependencies\imgui\backends\imgui_impl_vulkan.cpp">
       <Filter>imgui\backends</Filter>
     </ClCompile>
+    <ClCompile Include="flameblast.cc">
+      <Filter>Channelling</Filter>
+    </ClCompile>
+    <ClCompile Include="incinerate.cc">
+      <Filter>Channelling</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="example.png">
+      <Filter>Channelling</Filter>
+    </Image>
   </ItemGroup>
 </Project>

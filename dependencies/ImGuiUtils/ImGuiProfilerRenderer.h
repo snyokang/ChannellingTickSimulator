@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include <string>
 #include <vector>
 #include <map>
@@ -46,6 +47,8 @@ namespace ImGuiUtils
 
 			currFrame.tasks.resize(0);
 			for (taskIndex = 0; taskIndex < count; taskIndex++) {
+				currFrame.tasks.push_back(tasks[taskIndex]);
+				/*
 				if (taskIndex == 0) {
 					currFrame.tasks.push_back(tasks[taskIndex]);
 				} else {
@@ -55,6 +58,7 @@ namespace ImGuiUtils
 						currFrame.tasks.back().endTime = tasks[taskIndex].endTime;
 					}
 				}
+				*/
 			}
 			currFrame.taskStatsIndex.resize(currFrame.tasks.size());
 
@@ -88,7 +92,7 @@ namespace ImGuiUtils
 		{
 
 		}*/
-	private:
+	protected:
 		void RebuildTaskStats(size_t endFrame, size_t framesCount)
 		{
 			for (auto& taskStat : taskStats)
@@ -124,6 +128,7 @@ namespace ImGuiUtils
 		void RenderGraph(ImDrawList* drawList, glm::vec2 graphPos, glm::vec2 graphSize, size_t frameIndexOffset)
 		{
 			Rect(drawList, graphPos, graphPos + graphSize, 0xffffffff, false);
+
 			float maxFrameTime = 1.0f / 30.0f;
 			float heightThreshold = 1.0f;
 
@@ -347,45 +352,136 @@ namespace ImGuiUtils
 		size_t currFrameIndex = 0;
 	};
 
+	class DamageGraph : public ProfilerGraph
+	{
+	  public:
+		std::vector<float> *damage = nullptr;
+		std::vector<int> *stage = nullptr;
+
+		DamageGraph(size_t framesCount) : ProfilerGraph(framesCount) {}
+
+		void RenderTimings(int graphWidth, int legendWidth, int height, int frameIndexOffset)
+		{
+			ImDrawList* drawList = ImGui::GetWindowDrawList();
+			const glm::vec2 widgetPos = Vec2(ImGui::GetCursorScreenPos());
+			RenderGraph(drawList, widgetPos, glm::vec2(graphWidth, height), frameIndexOffset);
+			RenderLegend(drawList, widgetPos + glm::vec2(graphWidth, 0.0f), glm::vec2(legendWidth, height), frameIndexOffset);
+			ImGui::Dummy(ImVec2(float(graphWidth + legendWidth), float(height)));
+		}
+
+		void RenderGraph(ImDrawList* drawList, glm::vec2 graphPos, glm::vec2 graphSize, size_t frameIndexOffset)
+		{
+			Rect(drawList, graphPos, graphPos + graphSize, 0xffffffff, false);
+
+			for (size_t x = 0; x < 300 - frameIndexOffset; x++) {
+				glm::vec2 framePos = graphPos + glm::vec2(graphSize.x - 1 - frameWidth - (frameWidth + frameSpacing) * x, graphSize.y - 1);
+				glm::vec2 taskPos = framePos + glm::vec2(0.0f, 0.0f);
+				Rect(drawList,
+					taskPos + glm::vec2(0.0f, 0),
+					taskPos + glm::vec2(frameWidth, -(float)(*damage)[x + frameIndexOffset] / 1000 * graphSize.y),
+					(*stage)[x + frameIndexOffset] == -1 ? legit::Colors::emerald : legit::Colors::carrot,
+					true);
+			}
+		}
+
+		void RenderLegend(ImDrawList* drawList, glm::vec2 legendPos, glm::vec2 legendSize, size_t frameIndexOffset)
+		{
+			float rectSize = 20;
+			glm::vec2 channelPos = legendPos + glm::vec2(legendSize.x / 3, legendSize.y / 2);
+			glm::vec2 releasePos = legendPos + glm::vec2(legendSize.x / 3, legendSize.y / 2);
+			glm::vec2 rectOffset = glm::vec2(rectSize / 2, rectSize / 2);
+			Rect(drawList, channelPos - rectOffset, channelPos + rectOffset, legit::Colors::carrot, true);
+			Text(drawList, channelPos + glm::vec2(rectSize, -rectSize / 3), legit::Colors::imguiText, "Channel");
+
+			glm::vec2 nextLegendOffset(0, rectSize);
+			Rect(drawList, releasePos - rectOffset + nextLegendOffset, releasePos + rectOffset + nextLegendOffset, legit::Colors::emerald, true);
+			Text(drawList, releasePos + glm::vec2(rectSize, -rectSize / 3) + nextLegendOffset, legit::Colors::imguiText, "Release");
+
+			std::ostringstream text;
+			text.precision(1);
+			text << std::fixed << std::string("Lastest Damage: ") << (damage->back()) << std::string("%");
+			Text(drawList, legendPos, legit::Colors::imguiText, text.str().c_str());
+
+			float acc_dmg = 0;
+			std::for_each(damage->begin(), damage->end(), [&acc_dmg](float dmg) { acc_dmg += dmg; });
+
+			text.str("");
+			text << std::fixed << std::string("Average Damage: ") << (acc_dmg / damage->size()) << std::string("%");
+			Text(drawList, legendPos + nextLegendOffset, legit::Colors::imguiText, text.str().c_str());
+		}
+	};
+
+
+	class ManaGraph : public ProfilerGraph
+	{
+	public:
+		std::vector<float>* mana = nullptr;
+		std::vector<int>* stage = nullptr;
+
+		ManaGraph(size_t framesCount) : ProfilerGraph(framesCount) {}
+
+		void RenderTimings(int graphWidth, int legendWidth, int height, int frameIndexOffset)
+		{
+			ImDrawList* drawList = ImGui::GetWindowDrawList();
+			const glm::vec2 widgetPos = Vec2(ImGui::GetCursorScreenPos());
+			RenderGraph(drawList, widgetPos, glm::vec2(graphWidth, height), frameIndexOffset);
+			RenderLegend(drawList, widgetPos + glm::vec2(graphWidth, 0.0f), glm::vec2(legendWidth, height), frameIndexOffset);
+			ImGui::Dummy(ImVec2(float(graphWidth + legendWidth), float(height)));
+		}
+
+		void RenderGraph(ImDrawList* drawList, glm::vec2 graphPos, glm::vec2 graphSize, size_t frameIndexOffset)
+		{
+			Rect(drawList, graphPos, graphPos + graphSize, 0xffffffff, false);
+
+			for (size_t x = 0; x < 300 - frameIndexOffset; x++) {
+				glm::vec2 framePos = graphPos + glm::vec2(graphSize.x - 1 - frameWidth - (frameWidth + frameSpacing) * x, graphSize.y - 1);
+				glm::vec2 taskPos = framePos + glm::vec2(0.0f, 0.0f);
+				Rect(drawList,
+					taskPos + glm::vec2(0.0f, 0),
+					taskPos + glm::vec2(frameWidth, -(float)(*mana)[x + frameIndexOffset] / 50 * graphSize.y),
+					(*stage)[x + frameIndexOffset] == -1 ? legit::Colors::alizarin : legit::Colors::greenSea,
+					true);
+			}
+		}
+
+		void RenderLegend(ImDrawList* drawList, glm::vec2 legendPos, glm::vec2 legendSize, size_t frameIndexOffset)
+		{
+			float rectSize = 20;
+			glm::vec2 channelPos = legendPos + glm::vec2(legendSize.x / 3, legendSize.y / 2);
+			glm::vec2 releasePos = legendPos + glm::vec2(legendSize.x / 3, legendSize.y / 2);
+			glm::vec2 rectOffset = glm::vec2(rectSize / 2, rectSize / 2);
+			Rect(drawList, channelPos - rectOffset, channelPos + rectOffset, legit::Colors::greenSea, true);
+			Text(drawList, channelPos + glm::vec2(rectSize, -rectSize / 3), legit::Colors::imguiText, "Mana");
+
+			glm::vec2 nextLegendOffset(0, rectSize);
+			Rect(drawList, releasePos - rectOffset + nextLegendOffset, releasePos + rectOffset + nextLegendOffset, legit::Colors::alizarin, true);
+			Text(drawList, releasePos + glm::vec2(rectSize, -rectSize / 3) + nextLegendOffset, legit::Colors::imguiText, "Mana (depleted)");
+
+			std::ostringstream text;
+			text.precision(1);
+			text << std::fixed << std::string("Current Mana: ") << (mana->back());
+			Text(drawList, legendPos, legit::Colors::imguiText, text.str().c_str());
+		}
+	};
+
 	class ProfilersWindow
 	{
 	  public:
 		ProfilersWindow() :
-			cpuGraph(300),
-			gpuGraph(300)
+			dg(300),
+			mg(300)
 		{
-			stopProfiling = false;
 			frameOffset = 0;
-			frameWidth = 3;
+			frameWidth = 4;
 			frameSpacing = 1;
 			useColoredLegendText = true;
-			prevFpsFrameTime = std::chrono::system_clock::now();
-			fpsFramesCount = 0;
-			avgFrameTime = 1.0f;
 		}
 
 		void Render()
 		{
-			fpsFramesCount++;
-			auto currFrameTime = std::chrono::system_clock::now();
-			{
-				float fpsDeltaTime = std::chrono::duration<float>(currFrameTime - prevFpsFrameTime).count();
-				if (fpsDeltaTime > 0.5f)
-				{
-					this->avgFrameTime = fpsDeltaTime / float(fpsFramesCount);
-					fpsFramesCount = 0;
-					prevFpsFrameTime = currFrameTime;
-				}
-			}
-
-			std::stringstream title;
-			title.precision(2);
-			title << std::fixed << "Legit profiler [" << 1.0f / avgFrameTime << "fps\t" << avgFrameTime * 1000.0f << "ms]###ProfilerWindow";
-			//###AnimatedTitle
-
 			ImGui::SetNextWindowPos(ImVec2(0, 0));
 			ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
-			ImGui::Begin(title.str().c_str(), 0, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoBackground |
+			ImGui::Begin("Channelling Tick Simulator", 0, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoBackground |
 				ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize |
 				ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoBringToFrontOnFocus);
 			ImVec2 canvasSize = ImGui::GetContentRegionAvail();
@@ -396,45 +492,26 @@ namespace ImGuiUtils
 			int graphHeight = std::min(maxGraphHeight, availableGraphHeight);
 			int legendWidth = 200;
 			int graphWidth = int(canvasSize.x) - legendWidth;
-			gpuGraph.RenderTimings(graphWidth, legendWidth, graphHeight, frameOffset);
-			cpuGraph.RenderTimings(graphWidth, legendWidth, graphHeight, frameOffset);
-			if (graphHeight * 2 + sizeMargin + sizeMargin < canvasSize.y)
-			{
-				ImGui::Columns(2);
-				size_t textSize = 50;
-				ImGui::Checkbox("Stop profiling", &stopProfiling);
-				//ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x - textSize);
-				ImGui::Checkbox("Colored legend text", &useColoredLegendText);
-				ImGui::DragInt("Frame offset", &frameOffset, 1.0f, 0, 400);
-				ImGui::NextColumn();
+			//std::cout << graphWidth / (frameWidth + frameSpacing) << std::endl;
+			frameOffset = std::max(0, 300 - graphWidth / (frameWidth + frameSpacing));
+			dg.RenderTimings(graphWidth, legendWidth, graphHeight, frameOffset);
+			mg.RenderTimings(graphWidth, legendWidth, graphHeight, frameOffset);
 
-				ImGui::SliderInt("Frame width", &frameWidth, 1, 4);
-				ImGui::SliderInt("Frame spacing", &frameSpacing, 0, 2);
-				ImGui::SliderFloat("Transparency", &ImGui::GetStyle().Colors[ImGuiCol_WindowBg].w, 0.0f, 1.0f);
-				ImGui::Columns(1);
-			}
-			if (!stopProfiling)
-				frameOffset = 0;
-			gpuGraph.frameWidth = frameWidth;
-			gpuGraph.frameSpacing = frameSpacing;
-			gpuGraph.useColoredLegendText = useColoredLegendText;
-			cpuGraph.frameWidth = frameWidth;
-			cpuGraph.frameSpacing = frameSpacing;
-			cpuGraph.useColoredLegendText = useColoredLegendText;
+			dg.frameWidth = frameWidth;
+			dg.frameSpacing = frameSpacing;
+			dg.useColoredLegendText = useColoredLegendText;
+			mg.frameWidth = frameWidth;
+			mg.frameSpacing = frameSpacing;
+			mg.useColoredLegendText = useColoredLegendText;
 
 			ImGui::End();
 		}
-		bool stopProfiling;
 		int frameOffset;
-		ProfilerGraph cpuGraph;
-		ProfilerGraph gpuGraph;
+		DamageGraph dg;
+		ManaGraph mg;
 		int frameWidth;
 		int frameSpacing;
 		bool useColoredLegendText;
-		using TimePoint = std::chrono::time_point<std::chrono::system_clock>;
-		TimePoint prevFpsFrameTime;
-		size_t fpsFramesCount;
-		float avgFrameTime;
 	};
 }
 
